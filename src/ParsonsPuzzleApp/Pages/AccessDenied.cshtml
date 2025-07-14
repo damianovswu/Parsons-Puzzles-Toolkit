@@ -1,0 +1,94 @@
+﻿@page
+@model AccessDeniedModel
+@{
+    ViewData["Title"] = "Достъпът е отказан";
+    Layout = "_Layout";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-lg border-0">
+                <div class="card-body text-center p-5">
+                    <div class="mb-4">
+                        <i class="fas fa-lock text-danger" style="font-size: 5rem;"></i>
+                    </div>
+
+                    <h1 class="display-4 mb-3">Достъпът е отказан</h1>
+                    <p class="lead text-muted mb-4">@Model.Message</p>
+
+                    <div class="alert alert-danger text-start mx-auto" style="max-width: 500px;">
+                        <h5 class="alert-heading"><i class="fas fa-info-circle"></i> Възможни причини:</h5>
+                        <ul class="mb-0">
+                            <li>Връзката е невалидна или изтекла</li>
+                            <li>Колекцията не е публикувана</li>
+                            <li>Не сте въвели правилен код за отключване</li>
+                            <li>Сесията ви е изтекла (след 24 часа)</li>
+                            <li>Нямате права за достъп до този ресурс</li>
+                        </ul>
+                    </div>
+
+                    <div class="mt-4">
+                        <h5 class="mb-3">Какво можете да направите?</h5>
+                        <div class="row text-center">
+                            <div class="col-md-4 mb-3">
+                                <div class="card h-100 border-danger">
+                                    <div class="card-body">
+                                        <i class="fas fa-redo text-danger mb-2" style="font-size: 2rem;"></i>
+                                        <p class="card-text">Опитайте да получите нова връзка за достъп</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <div class="card h-100 border-warning">
+                                    <div class="card-body">
+                                        <i class="fas fa-key text-warning mb-2" style="font-size: 2rem;"></i>
+                                        <p class="card-text">Проверете кода за отключване</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <div class="card h-100 border-info">
+                                    <div class="card-body">
+                                        <i class="fas fa-user-tie text-info mb-2" style="font-size: 2rem;"></i>
+                                        <p class="card-text">Свържете се с преподавателя</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-4">
+                        <a href="/" class="btn btn-primary btn-lg me-2">
+                            <i class="fas fa-home"></i> Начална страница
+                        </a>
+                        <a href="/SelectBundle" class="btn btn-secondary btn-lg">
+                            <i class="fas fa-info-circle"></i> Как да започна
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <style>
+        .card {
+            border-radius: 15px;
+        }
+
+        .alert {
+            border-radius: 10px;
+        }
+
+        .card.border-danger, .card.border-warning, .card.border-info {
+            transition: all 0.3s ease;
+        }
+
+            .card.border-danger:hover, .card.border-warning:hover, .card.border-info:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            }
+    </style>
+}

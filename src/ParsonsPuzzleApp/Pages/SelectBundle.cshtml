@@ -1,0 +1,119 @@
+﻿@page
+@model SelectBundleModel
+@{
+    ViewData["Title"] = "Как да започнете";
+    Layout = "_Layout";
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h2 class="mb-0 text-center">
+                        <i class="fas fa-puzzle-piece"></i> Програмни пъзели на Парсънс
+                    </h2>
+                </div>
+                <div class="card-body">
+                    <h3 class="text-center mb-4">Как да започнете решаването на пъзели?</h3>
+
+                    <div class="alert alert-info">
+                        <h5><i class="fas fa-info-circle"></i> За студенти</h5>
+                        <p>За да започнете решаването на пъзели, трябва да:</p>
+                        <ol>
+                            <li>Получите <strong>връзка за достъп</strong> от вашия преподавател</li>
+                            <li>Получите <strong>код за отключване</strong> на колекцията</li>
+                            <li>Отворете връзката и въведете вашето име/номер и кода</li>
+                            <li>Решавайте пъзелите последователно</li>
+                        </ol>
+                    </div>
+
+                    <div class="row mt-4">
+                        <div class="col-md-6">
+                            <div class="card h-100">
+                                <div class="card-body text-center">
+                                    <i class="fas fa-link fa-3x text-primary mb-3"></i>
+                                    <h5>Имам връзка от преподавател</h5>
+                                    <p>Ако вече имате връзка за достъп, просто я отворете във вашия браузър.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card h-100">
+                                <div class="card-body text-center">
+                                    <i class="fas fa-key fa-3x text-success mb-3"></i>
+                                    <h5>Имам само код</h5>
+                                    <p>Ако имате само код без връзка, помолете преподавателя си за пълната връзка за достъп.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    @if (Model.PublishedBundles.Any())
+                    {
+                        <div class="mt-4">
+                            <h4>Публично достъпни примерни колекции:</h4>
+                            <div class="list-group">
+                                <div class="list-group-item">
+                                    <div class="d-flex w-100 justify-content-between">
+                                        <h5 class="mb-1">Примерна колекция със C++ пъзел</h5>
+                                        <small>Standard 2D</small>
+                                    </div>
+                                    <p class="mb-1">Код за отключване: <b>123</b></p>
+                                    <small class="text-muted">
+                                        <a href="http://194.141.86.248/bundle/b07884e9-22e0-4004-81a8-05aaa04d83bc" class="btn btn-primary btn-sm">
+                                            <i class="fas fa-home"></i> Отвори пъзела
+                                        </a>
+                                    </small>
+                                </div>
+                                <div class="list-group-item">
+                                    <div class="d-flex w-100 justify-content-between">
+                                        <h5 class="mb-1">Примерна колекция с Python пъзел</h5>
+                                        <small>Standard 2D</small>
+                                    </div>
+                                    <p class="mb-1">Код за отключване: <b>123</b></p>
+                                    <small class="text-muted">
+                                        <a href="http://194.141.86.248/bundle/75489b30-b603-4560-9606-a094f9347642" class="btn btn-primary btn-sm">
+                                            <i class="fas fa-home"></i> Отвори пъзела
+                                        </a>
+                                    </small>
+                                </div>
+                                <div class="list-group-item">
+                                    <div class="d-flex w-100 justify-content-between">
+                                        <h5 class="mb-1">Примерна колекция със SQL пъзел</h5>
+                                        <small>Fill-in-the-blank</small>
+                                    </div>
+                                    <p class="mb-1">Код за отключване: <b>123</b></p>
+                                    <small class="text-muted">
+                                        <a href="http://194.141.86.248/bundle/6abf8830-205f-4009-ad01-210012459896" class="btn btn-primary btn-sm">
+                                            <i class="fas fa-home"></i> Отвори пъзела
+                                        </a>
+                                    </small>
+                                </div>
+
+
+                                @* @foreach (var bundle in Model.PublishedBundles)
+                                {
+                                    <div class="list-group-item">
+                                        <div class="d-flex w-100 justify-content-between">
+                                            <h5 class="mb-1">@bundle.Identifier</h5>
+                                            <small>@bundle.PuzzleCount пъзела</small>
+                                        </div>
+                                        <p class="mb-1">@bundle.Description</p>
+                                        <small class="text-muted">Изисква код за отключване</small>
+                                    </div>
+                                } *@
+                            </div>
+                        </div>
+                    }
+
+                    <div class="mt-4 text-center">
+                        <a href="/" class="btn btn-primary">
+                            <i class="fas fa-home"></i> Към началната страница
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

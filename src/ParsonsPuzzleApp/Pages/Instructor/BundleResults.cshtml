@@ -1,0 +1,41 @@
+﻿@page
+@model BundleResultsModel
+@{
+    ViewData["Title"] = "Резултати";
+}
+
+<h2>Резултати: @Model.BundleIdentifier</h2>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Студент</th>
+            @foreach (var attempt in Model.StudentResults.SelectMany(sr => sr.Attempts).Select(a => a.AttemptDate).Distinct().OrderBy(d => d))
+            {
+                <th>@attempt.ToString("dd/MM/yyyy HH:mm")</th>
+            }
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var student in Model.StudentResults)
+        {
+            <tr>
+                <td>@student.StudentIdentifier</td>
+                @foreach (var attemptDate in Model.StudentResults.SelectMany(sr => sr.Attempts).Select(a => a.AttemptDate).Distinct().OrderBy(d => d))
+                {
+                    var attempt = student.Attempts.FirstOrDefault(a => a.AttemptDate == attemptDate);
+                    if (attempt != null)
+                    {
+                        <td>@attempt.TotalPuzzles / @attempt.CorrectPuzzles</td>
+                    }
+                    else
+                    {
+                        <td>-</td>
+                    }
+                }
+            </tr>
+        }
+    </tbody>
+</table>
+
+<a asp-page="./Bundles" class="btn btn-secondary">Назад към списъка с пакети</a>

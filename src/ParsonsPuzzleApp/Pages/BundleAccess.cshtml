@@ -1,0 +1,56 @@
+﻿@page "/bundle/{shareableLink:guid}"
+@model BundleAccessModel
+@{
+    ViewData["Title"] = "Достъп до колекция";
+    Layout = "_Layout";
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="mb-0">@Model.Bundle.Identifier</h3>
+                </div>
+                <div class="card-body">
+                    @if (!string.IsNullOrEmpty(Model.Bundle.Description))
+                    {
+                        <p class="text-muted">@Model.Bundle.Description</p>
+                    }
+
+                    @if (TempData["ErrorMessage"] != null)
+                    {
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <i class="fas fa-exclamation-circle"></i> @TempData["ErrorMessage"]
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    }
+
+                    <form method="post">
+                        <div asp-validation-summary="All" class="text-danger mb-3"></div>
+
+                        <div class="mb-3">
+                            <label asp-for="StudentIdentifier" class="form-label">Вашето име или студентски номер:</label>
+                            <input asp-for="StudentIdentifier" class="form-control" required placeholder="Например: Иван Иванов или 12345" />
+                            <span asp-validation-for="StudentIdentifier" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="BundleCode" class="form-label">Код за отключване:</label>
+                            <input asp-for="BundleCode" type="password" class="form-control" required placeholder="Въведете кода, предоставен от преподавателя" />
+                            <span asp-validation-for="BundleCode" class="text-danger"></span>
+                        </div>
+
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary">Започни решаването</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

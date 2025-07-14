@@ -1,0 +1,102 @@
+﻿@page "/BundleNotFound"
+@model BundleNotFoundModel
+@{
+    ViewData["Title"] = "Колекцията не е намерена";
+    Layout = "_Layout";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-lg border-0">
+                <div class="card-body text-center p-5">
+                    <div class="mb-4">
+                        <i class="fas fa-exclamation-triangle text-warning" style="font-size: 5rem;"></i>
+                    </div>
+
+                    <h1 class="display-4 mb-3">Упс!</h1>
+                    <h2 class="h3 mb-4 text-muted">Колекцията не е намерена</h2>
+
+                    <div class="alert alert-warning text-start mx-auto" style="max-width: 500px;">
+                        <h5 class="alert-heading">Възможни причини:</h5>
+                        <ul class="mb-0">
+                            <li>Връзката е невалидна или изтекла</li>
+                            <li>Колекцията още не е публикувана от преподавателя</li>
+                            <li>Колекцията е била премахната или скрита</li>
+                            <li>Грешка при копиране на връзката</li>
+                        </ul>
+                    </div>
+
+                    <div class="mt-4">
+                        <h5 class="mb-3">Какво можете да направите?</h5>
+                        <div class="row text-center">
+                            <div class="col-md-4 mb-3">
+                                <div class="card h-100 border-primary">
+                                    <div class="card-body">
+                                        <i class="fas fa-user-tie text-primary mb-2" style="font-size: 2rem;"></i>
+                                        <p class="card-text">Свържете се с вашия преподавател за нова връзка</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <div class="card h-100 border-info">
+                                    <div class="card-body">
+                                        <i class="fas fa-clipboard-check text-info mb-2" style="font-size: 2rem;"></i>
+                                        <p class="card-text">Проверете дали сте копирали правилно връзката</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <div class="card h-100 border-success">
+                                    <div class="card-body">
+                                        <i class="fas fa-clock text-success mb-2" style="font-size: 2rem;"></i>
+                                        <p class="card-text">Опитайте отново по-късно</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-4">
+                        <a href="/" class="btn btn-primary btn-lg me-2">
+                            <i class="fas fa-home"></i> Начална страница
+                        </a>
+                        <a href="/SelectBundle" class="btn btn-secondary btn-lg">
+                            <i class="fas fa-info-circle"></i> Как да започна
+                        </a>
+                    </div>
+
+                    @if (!string.IsNullOrEmpty(Model.ShareableLink))
+                    {
+                        <div class="mt-4">
+                            <small class="text-muted">
+                                Търсена връзка: <code>@Model.ShareableLink</code>
+                            </small>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <style>
+        .card {
+            border-radius: 15px;
+        }
+
+        .alert {
+            border-radius: 10px;
+        }
+
+        .card.border-primary, .card.border-info, .card.border-success {
+            transition: transform 0.2s;
+        }
+
+            .card.border-primary:hover, .card.border-info:hover, .card.border-success:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            }
+    </style>
+}

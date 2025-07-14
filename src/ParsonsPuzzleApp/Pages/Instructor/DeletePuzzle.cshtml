@@ -1,0 +1,60 @@
+﻿@page
+@model DeletePuzzleModel
+@{
+    ViewData["Title"] = "Изтриване на пъзел";
+}
+
+<h2>Изтриване на пъзел</h2>
+
+<h3>Сигурни ли сте, че искате да изтриете този пъзел?</h3>
+
+<div>
+    <h4>@Model.Puzzle.Title</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            Заглавие
+        </dt>
+        <dd class="col-sm-10">
+            @Model.Puzzle.Title
+        </dd>
+        <dt class="col-sm-2">
+            Език
+        </dt>
+        <dd class="col-sm-10">
+            @Model.Puzzle.Language
+        </dd>
+        <dt class="col-sm-2">
+            Задача
+        </dt>
+        <dd class="col-sm-10">
+            @Html.Raw(Model.Puzzle.Task)
+        </dd>
+        <dt class="col-sm-2">
+            Създаден на
+        </dt>
+        <dd class="col-sm-10">
+            @Model.Puzzle.CreatedAt.ToString("dd.MM.yyyy HH:mm")
+        </dd>
+    </dl>
+
+    @if (Model.Puzzle.BundlePuzzles.Any())
+    {
+        <div class="alert alert-warning">
+            <strong>Внимание!</strong> Този пъзел е свързан със следните колекции:
+            <ul>
+                @foreach (var bp in Model.Puzzle.BundlePuzzles)
+                {
+                    <li>@bp.Bundle.Identifier</li>
+                }
+            </ul>
+            Изтриването на пъзела ще го премахне от всички колекции.
+        </div>
+    }
+
+    <form method="post">
+        <input type="hidden" asp-for="Puzzle.Id" />
+        <input type="submit" value="Изтрий" class="btn btn-danger" />
+        <a asp-page="./Puzzles" class="btn btn-secondary">Назад към списъка</a>
+    </form>
+</div>

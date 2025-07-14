@@ -1,0 +1,84 @@
+﻿@page
+@model EditBundleModel
+@{
+    ViewData["Title"] = "Редактиране на колекция";
+}
+
+<h2>Редактиране на колекция от пъзели</h2>
+
+<div asp-validation-summary="All" class="text-danger"></div>
+
+<form method="post" id="bundleForm">
+    <input type="hidden" asp-for="Bundle.Id" />
+    <div class="form-group">
+        <label asp-for="Bundle.Identifier">Идентификатор</label>
+        <input asp-for="Bundle.Identifier" class="form-control" required />
+        <span asp-validation-for="Bundle.Identifier" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Bundle.Key">Ключ</label>
+        <input asp-for="Bundle.Key" class="form-control" required />
+        <span asp-validation-for="Bundle.Key" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Bundle.Description">Описание</label>
+        <textarea asp-for="Bundle.Description" class="form-control"></textarea>
+        <span asp-validation-for="Bundle.Description" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label>Изберете пъзели</label>
+        <select asp-for="SelectedPuzzleIds" asp-items="Model.PuzzleOptions" multiple size="10" class="form-control" id="puzzleSelect" required>
+            <option value="">Изберете пъзели</option>
+        </select>
+        <span asp-validation-for="SelectedPuzzleIds" class="text-danger"></span>
+        <div id="selectedPuzzles" class="mt-2">
+            <h5>Избрани пъзели:</h5>
+            <ul id="selectedPuzzlesList" class="list-group"></ul>
+        </div>
+    </div>
+    <button type="submit" class="btn btn-primary">Запази</button>
+    <a asp-page="./Bundles" class="btn btn-secondary">Обратно</a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        $(document).ready(function() {
+            // Инициализиране на списъка с избрани пъзели
+            updateSelectedPuzzlesList();
+
+            // Актуализиране на списъка при промяна в select
+            $("#puzzleSelect").change(function() {
+                updateSelectedPuzzlesList();
+            });
+
+            // Валидация при submit
+            $("#bundleForm").submit(function(e) {
+                if ($("#puzzleSelect").val() == null || $("#puzzleSelect").val().length === 0) {
+                    e.preventDefault();
+                    alert("Моля, изберете поне един пъзел!");
+                    return false;
+                }
+            });
+        });
+
+        function updateSelectedPuzzlesList() {
+            var selectedPuzzlesList = $("#selectedPuzzlesList");
+            selectedPuzzlesList.empty();
+
+            $("#puzzleSelect option:selected").each(function() {
+                var puzzleTitle = $(this).text();
+                var listItem = $("<li>")
+                    .addClass("list-group-item")
+                    .text(puzzleTitle);
+                selectedPuzzlesList.append(listItem);
+            });
+
+            if (selectedPuzzlesList.children().length === 0) {
+                selectedPuzzlesList.append($("<li>")
+                    .addClass("list-group-item text-muted")
+                    .text("Няма избрани пъзели"));
+            }
+        }
+    </script>
+}

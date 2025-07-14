@@ -1,0 +1,391 @@
+﻿@page
+@model EditPuzzleModel
+@{
+    ViewData["Title"] = "Редактирай пъзел";
+}
+
+<h1>Редактирай пъзел</h1>
+
+<div asp-validation-summary="All" class="text-danger"></div>
+
+<form method="post" id="puzzleForm">
+    <input type="hidden" asp-for="Puzzle.Id" />
+
+    <div class="form-group mb-3">
+        <label asp-for="Puzzle.Title" class="form-label">Заглавие</label>
+        <input asp-for="Puzzle.Title" class="form-control" required />
+        <span asp-validation-for="Puzzle.Title" class="text-danger"></span>
+    </div>
+
+    <div class="form-group mb-3">
+        <label asp-for="Puzzle.Task" class="form-label">Задача</label>
+        <textarea asp-for="Puzzle.Task" class="form-control" rows="3" required></textarea>
+        <span asp-validation-for="Puzzle.Task" class="text-danger"></span>
+    </div>
+
+    <div class="form-group mb-3">
+        <label asp-for="Puzzle.Language" class="form-label">Език</label>
+        <select asp-for="Puzzle.Language" asp-items="Model.LanguageOptions" class="form-control" id="languageSelect" required>
+            <option value="">Избери език</option>
+        </select>
+        <span asp-validation-for="Puzzle.Language" class="text-danger"></span>
+    </div>
+
+    <!-- Simplified help panel -->
+    <div class="alert alert-info" id="multilineHelp" style="display: none;">
+        <h5><i class="fas fa-info-circle"></i> Синтаксис за многоредови блокове</h5>
+        <div id="syntaxExample"></div>
+        <div class="mt-2">
+            <small class="text-muted">
+                <strong>Важно:</strong> Многоредовите блокове запазват редовете си в точния ред, в който са написани.
+            </small>
+        </div>
+    </div>
+
+    <div class="form-group mb-3">
+        <label asp-for="Puzzle.SourceCode" class="form-label">Изходен код</label>
+        <div class="d-flex gap-2 mb-2">
+            <button type="button" class="btn btn-secondary btn-sm" id="insertSlotButton">
+                <i class="fas fa-plus-square"></i> Вмъкни слот
+            </button>
+            <button type="button" class="btn btn-info btn-sm" id="insertMultilineButton">
+                <i class="fas fa-layer-group"></i> Вмъкни многоредов блок
+            </button>
+        </div>
+        <textarea asp-for="Puzzle.SourceCode" class="form-control" id="sourceCode" rows="10" required></textarea>
+        <span asp-validation-for="Puzzle.SourceCode" class="text-danger"></span>
+        <div class="form-text">
+            За езици с къдрави скоби (C, C++, C#, Java, JavaScript): Блоковете { и } се добавят динамично по време на нареждане на пъзела.
+        </div>
+    </div>
+
+    <div id="miniBlocksPanel" class="form-group mb-3">
+        <h4>Мини-блокове за слотове</h4>
+        <div id="miniBlocksContainer">
+            @foreach (var slot in Model.MiniBlocks)
+            {
+                <div class="mb-3">
+                    <h5>Слот: @slot.Key</h5>
+                    <div class="mini-blocks">
+                        @for (int j = 0; j < slot.Value.Count; j++)
+                        {
+                            <div class="input-group mb-2">
+                                <input type="text" class="form-control"
+                                       name="MiniBlocks[@slot.Key][@j].Content"
+                                       value="@slot.Value[j].Content" required />
+                                <span class="input-group-text @(j == 0 ? "text-success" : "")">
+                                    @(j == 0 ? "✅" : "")
+                                </span>
+                                <button type="button" class="btn btn-danger btn-sm" onclick="window.removeMiniBlock(this)">Премахни</button>
+                            </div>
+                        }
+                    </div>
+                    <button type="button" class="btn btn-sm btn-secondary mt-2" onclick="window.addMiniBlockInput(this, '@slot.Key', @Model.MiniBlocks.Keys.ToList().IndexOf(slot.Key))">Добави мини-блок</button>
+                </div>
+            }
+        </div>
+    </div>
+
+    <div class="form-group mb-3">
+        <label asp-for="Puzzle.Distractors" class="form-label">Дистрактори <small class="text-muted">(незадължително)</small></label>
+        <small class="form-text text-muted">Можете да използвате същия синтаксис за многоредови блокове и тук. Оставете празно, ако не искате дистрактори.</small>
+        <textarea asp-for="Puzzle.Distractors" class="form-control" id="distractors" rows="5"></textarea>
+        <span asp-validation-for="Puzzle.Distractors" class="text-danger"></span>
+    </div>
+
+    <div class="d-flex gap-2">
+        <button type="submit" class="btn btn-primary">Запази</button>
+        <a asp-page="/Instructor/Puzzles" class="btn btn-secondary">Отказ</a>
+    </div>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        $(document).ready(function() {
+            var sourceCodeEditor = CodeMirror.fromTextArea(document.getElementById("sourceCode"), {
+                lineNumbers: true,
+                theme: "monokai",
+                mode: window.getCodeMirrorMode()
+            });
+
+            var distractorsEditor = CodeMirror.fromTextArea(document.getElementById("distractors"), {
+                lineNumbers: true,
+                theme: "monokai",
+                mode: window.getCodeMirrorMode()
+            });
+
+            $("#languageSelect").change(function() {
+                var mode = window.getCodeMirrorMode();
+                sourceCodeEditor.setOption("mode", mode);
+                distractorsEditor.setOption("mode", mode);
+
+                // Show syntax help
+                var language = $(this).find("option:selected").text();
+                updateMultilineHelp(language);
+            });
+
+            $("#insertSlotButton").click(function() {
+                window.insertSlot(sourceCodeEditor);
+            });
+
+            sourceCodeEditor.on("change", function() {
+                window.updateMiniBlocksPanel(sourceCodeEditor);
+            });
+
+            // Show syntax help on load if language is selected
+            if ($("#languageSelect").val()) {
+                var language = $("#languageSelect").find("option:selected").text();
+                updateMultilineHelp(language);
+            }
+
+            function updateMultilineHelp(language) {
+                var syntax = getCommentSyntax(language);
+                if (syntax) {
+                    $("#multilineHelp").show();
+                    $("#syntaxExample").html(`
+                        <pre class="mb-2"><code>${syntax.example}</code></pre>
+                        <div class="text-muted">
+                            <small>
+                                <strong>Съвет:</strong> Просто поставете кода между маркерите. Редовете се запазват в същия ред.
+                            </small>
+                        </div>
+                    `);
+                } else {
+                    $("#multilineHelp").hide();
+                }
+            }
+
+            function getCommentSyntax(language) {
+                const syntaxMap = {
+                    'C': {
+                        comment: '//',
+                        example: '//-->\nint a = 10;\nfloat b = 20.5;\nchar c = \'A\';\n//<--\n\nint main() {\n    printf("Hello");\n    return 0;\n}'
+                    },
+                    'Cpp': {
+                        comment: '//',
+                        example: '//-->\n#include &lt;iostream&gt;\n#include &lt;vector&gt;\n//<--\n\nusing namespace §nspc§;\nint main() {\n    cout << "Hello" << endl;\n    return 0;\n}'
+                    },
+                    'CSharp': {
+                        comment: '//',
+                        example: '//-->\nusing System;\nusing System.Collections.Generic;\n//<--\n\npublic class Program {\n    public static void Main() {\n        Console.WriteLine("Hello");\n    }\n}'
+                    },
+                    'Java': {
+                        comment: '//',
+                        example: '//-->\nimport java.util.List;\nimport java.util.ArrayList;\n//<--\n\npublic class Main {\n    public static void main(String[] args) {\n        System.out.println("Hello");\n    }\n}'
+                    },
+                    'JavaScript': {
+                        comment: '//',
+                        example: '//-->\nimport React from "react";\nimport { useState } from "react";\n//<--\n\nfunction App() {\n    return <div>Hello</div>;\n}'
+                    },
+                    'Python': {
+                        comment: '#',
+                        example: '#-->\nimport math\nimport random\nfrom datetime import datetime\n#<--\n\ndef calculate_area(radius):\n    return math.pi * radius ** 2'
+                    },
+                    'TSQL': {
+                        comment: '--',
+                        example: '-->\nDECLARE @@UserId INT;\nDECLARE @@UserName NVARCHAR(100);\n--<\n\nSELECT * FROM Users WHERE IsActive = 1;'
+                    },
+                    'MySQL': {
+                        comment: '--',
+                        example: '-->\nDECLARE userId INT;\nDECLARE userName VARCHAR(100);\n--<\n\nSELECT * FROM users WHERE active = 1;'
+                    },
+                    'PostgreSQL': {
+                        comment: '--',
+                        example: '-->\nDECLARE user_id INTEGER;\nDECLARE user_name VARCHAR(100);\n--<\n\nSELECT * FROM users WHERE active = true;'
+                    },
+                    'plSQL': {
+                        comment: '--',
+                        example: '-->\nv_employee_id NUMBER;\nv_employee_name VARCHAR2(100);\n--<\n\nBEGIN\n    SELECT salary INTO v_salary FROM employees;\nEND;'
+                    }
+                };
+                return syntaxMap[language];
+            }
+
+            // Insert multiline block - completely simplified
+            $("#insertMultilineButton").click(function() {
+                var language = $("#languageSelect").find("option:selected").text();
+                var syntax = getCommentSyntax(language);
+
+                if (!syntax) {
+                    alert("Моля, изберете език първо!");
+                    return;
+                }
+
+                // Simple template - no complex naming or ordering
+                var template = `${syntax.comment}-->\n\n${syntax.comment}<--`;
+
+                // Insert in CodeMirror
+                sourceCodeEditor.replaceSelection(template);
+
+                // Position cursor between markers
+                var cursor = sourceCodeEditor.getCursor();
+                sourceCodeEditor.setCursor({line: cursor.line - 1, ch: 0});
+                sourceCodeEditor.focus();
+            });
+
+            // Simplified form validation
+            $("#puzzleForm").submit(function(e) {
+                sourceCodeEditor.save();
+                distractorsEditor.save();
+
+                // Validate blocks
+                var sourceCode = $("#sourceCode").val();
+                var distractors = $("#distractors").val();
+                var language = $("#languageSelect").find("option:selected").text();
+
+                if (sourceCode && !validateBlockSyntax(sourceCode, language)) {
+                    alert("Грешка: Има незатворени многоредови блокове в изходния код!");
+                    e.preventDefault();
+                    return false;
+                }
+
+                if (distractors && !validateBlockSyntax(distractors, language)) {
+                    if (!confirm("Внимание: Има незатворени многоредови блокове в дистракторите. Те ще бъдат третирани като обикновени редове.\n\nЖелаете ли да продължите?")) {
+                        e.preventDefault();
+                        return false;
+                    }
+                }
+            });
+
+            function validateBlockSyntax(code, language) {
+                var syntax = getCommentSyntax(language);
+                if (!syntax) return true;
+
+                var lines = code.split('\n');
+                var openBlocks = 0;
+
+                lines.forEach((line, index) => {
+                    var trimmed = line.trim();
+                    // Simple check for start marker
+                    if (trimmed === `${syntax.comment}-->`) {
+                        openBlocks++;
+                    }
+                    // Simple check for end marker
+                    else if (trimmed === `${syntax.comment}<--`) {
+                        openBlocks--;
+                        if (openBlocks < 0) {
+                            console.error(`Затварящ таг без отварящ на ред ${index + 1}`);
+                        }
+                    }
+                });
+
+                return openBlocks === 0;
+            }
+
+            window.updateMiniBlocksPanel(sourceCodeEditor);
+        });
+
+        // Shared functions used by both create and edit pages
+        window.getCodeMirrorMode = function() {
+            var language = $("#languageSelect").val();
+            switch (parseInt(language)) {
+                case 1: case 2: case 3: case 4: return "clike";
+                case 5: return "javascript";
+                case 6: return "python";
+                case 7: case 8: case 9: case 10: return "sql";
+                default: return "text/plain";
+            }
+        };
+
+        window.insertSlot = function(editor) {
+            var slotName = prompt("Въведете име на слота:");
+            if (slotName) {
+                var slotText = "§" + slotName + "§";
+                editor.replaceSelection(slotText);
+                window.updateMiniBlocksPanel(editor);
+            }
+        };
+
+        window.updateMiniBlocksPanel = function(editor) {
+            var sourceCode = editor.getValue();
+            var slotRegex = /§([^§]+)§/g;
+            var slots = [];
+            var match;
+            while ((match = slotRegex.exec(sourceCode)) !== null) {
+                slots.push(match[1]);
+            }
+
+            var container = $("#miniBlocksContainer");
+            var existingSlots = container.find("h5").map(function() {
+                return $(this).text().replace("Слот: ", "");
+            }).get();
+
+            slots.forEach(function(slot, index) {
+                if (!existingSlots.includes(slot)) {
+                    var slotDiv = $("<div>").addClass("mb-3");
+                    slotDiv.append($("<h5>").text("Слот: " + slot));
+                    var blocksContainer = $("<div>").addClass("mini-blocks");
+                    window.addMiniBlockInput(blocksContainer, slot, index);
+                    slotDiv.append(blocksContainer);
+                    slotDiv.append($("<button>")
+                        .addClass("btn btn-sm btn-secondary mt-2")
+                        .text("Добави мини-блок")
+                        .click(function() {
+                            window.addMiniBlockInput(blocksContainer, slot, index);
+                        }));
+                    container.append(slotDiv);
+                }
+            });
+        };
+
+        window.addMiniBlockInput = function(container, slot, slotIndex) {
+            var container = $(container).hasClass("mini-blocks") ? $(container) : $(container).prev(".mini-blocks");
+            var index = container.children().length;
+            var inputGroup = $("<div>").addClass("input-group mb-2");
+            var input = $("<input>")
+                .attr("type", "text")
+                .attr("name", "MiniBlocks[" + slot + "][" + index + "].Content")
+                .addClass("form-control")
+                .prop("required", true);
+            var icon = $("<span>")
+                .addClass("input-group-text")
+                .addClass(index === 0 ? "text-success" : "")
+                .text(index === 0 ? "✅" : "");
+            var removeButton = $("<button>")
+                .attr("type", "button")
+                .addClass("btn btn-danger btn-sm")
+                .text("Премахни")
+                .click(function() {
+                    window.removeMiniBlock(this);
+                });
+            inputGroup.append(input).append(icon).append(removeButton);
+            container.append(inputGroup);
+        };
+
+        window.removeMiniBlock = function(button) {
+            $(button).closest(".input-group").remove();
+        };
+    </script>
+}
+
+@section Styles {
+    <style>
+        #multilineHelp {
+            border-left: 4px solid #17a2b8;
+        }
+
+            #multilineHelp pre {
+                background-color: #f8f9fa;
+                padding: 1rem;
+                border-radius: 0.25rem;
+                overflow-x: auto;
+            }
+
+            #multilineHelp code {
+                color: #e83e8c;
+                font-size: 0.9rem;
+            }
+
+        .gap-2 {
+            gap: 0.5rem;
+        }
+
+        .mini-blocks {
+            background-color: #f8f9fa;
+            padding: 0.5rem;
+            border-radius: 0.25rem;
+            margin-top: 0.5rem;
+        }
+    </style>
+}

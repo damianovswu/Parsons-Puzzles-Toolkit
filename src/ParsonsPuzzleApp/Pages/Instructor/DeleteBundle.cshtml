@@ -1,0 +1,25 @@
+﻿@page
+@model DeleteBundleModel
+@{
+    ViewData["Title"] = "Изтриване на колекция";
+}
+
+<h2>Изтриване на колекция от пъзели</h2>
+
+<h3>Сигурни ли сте, че искате да изтриете тази колекция?</h3>
+<div>
+    <h4>@Model.Bundle.Identifier</h4>
+    <p>@Model.Bundle.Description</p>
+    <h5>Свързани пъзели:</h5>
+    <ul>
+        @foreach (var puzzle in Model.Bundle.BundlePuzzles)
+        {
+            <li>@puzzle.Puzzle.Title</li>
+        }
+    </ul>
+    <form method="post">
+        <input type="hidden" asp-for="Bundle.Id" />
+        <button type="submit" class="btn btn-danger">Изтрий</button>
+        <a asp-page="./Bundles" class="btn btn-secondary">Отказ</a>
+    </form>
+</div>

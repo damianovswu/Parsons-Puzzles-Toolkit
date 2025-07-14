@@ -1,0 +1,125 @@
+﻿@page "/BundleComplete/{bundleAttemptId:guid}"
+@model BundleCompleteModel
+@{
+    ViewData["Title"] = "Колекция завършена";
+    Layout = "_Layout";
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-success text-white">
+                    <h2 class="mb-0 text-center">
+                        <i class="fas fa-check-circle"></i> Поздравления!
+                    </h2>
+                </div>
+                <div class="card-body">
+                    <h3 class="text-center mb-4">Завършихте колекцията: @Model.Bundle.Identifier</h3>
+
+                    <div class="row text-center mb-4">
+                        <div class="col-md-4">
+                            <div class="card bg-light">
+                                <div class="card-body">
+                                    <h4 class="card-title">@Model.Statistics.TotalPuzzles</h4>
+                                    <p class="card-text">Общо пъзели</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card bg-success text-white">
+                                <div class="card-body">
+                                    <h4 class="card-title">@Model.Statistics.CorrectOnFirstTry</h4>
+                                    <p class="card-text">Верни от първи опит</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card bg-info text-white">
+                                <div class="card-body">
+                                    <h4 class="card-title">@Model.Statistics.TotalAttempts</h4>
+                                    <p class="card-text">Общо опити</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="progress mb-4" style="height: 30px;">
+                        <div class="progress-bar bg-success" role="progressbar"
+                             style="width: @Model.Statistics.SuccessRate%;"
+                             aria-valuenow="@Model.Statistics.SuccessRate"
+                             aria-valuemin="0" aria-valuemax="100">
+                            @Model.Statistics.SuccessRate% успех
+                        </div>
+                    </div>
+
+                    <h4>Детайлни резултати:</h4>
+                    <table class="table table-sm">
+                        <thead>
+                            <tr>
+                                <th>Пъзел</th>
+                                <th>Резултат</th>
+                                <th>Опити</th>
+                                <th>Време</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var puzzle in Model.PuzzleResults)
+                            {
+                                <tr>
+                                    <td>@puzzle.PuzzleTitle</td>
+                                    <td>
+                                        @if (puzzle.IsCorrect)
+                                        {
+                                            <span class="badge bg-success">
+                                                <i class="fas fa-check"></i> Вярно
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-danger">
+                                                <i class="fas fa-times"></i> Грешно
+                                            </span>
+                                        }
+                                    </td>
+                                    <td>@puzzle.Attempts</td>
+                                    <td>@TimeSpan.FromSeconds(puzzle.TimeTaken).ToString(@"mm\:ss")</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+
+                    <div class="mt-4 text-center">
+                        <p class="mb-3">
+                            <strong>Студент:</strong> @Model.StudentIdentifier<br>
+                            <strong>Дата:</strong> @Model.CompletedAt.ToString("dd.MM.yyyy HH:mm")
+                        </p>
+
+                        <div class="d-grid gap-2 d-md-block">
+                            <a href="/" class="btn btn-primary">
+                                <i class="fas fa-home"></i> Към началната страница
+                            </a>
+                            <button type="button" class="btn btn-secondary" onclick="window.print()">
+                                <i class="fas fa-print"></i> Принтирай резултатите
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <style>
+        @@media print {
+            .btn, nav, footer {
+                display: none !important;
+            }
+
+            .card {
+                border: none !important;
+            }
+        }
+    </style>
+}

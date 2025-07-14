@@ -1,0 +1,342 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Начало";
+}
+
+@section Styles {
+    <style>
+        .hero-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 4rem 0;
+            margin-bottom: 3rem;
+        }
+
+        .feature-card {
+            transition: transform 0.3s ease;
+            border: none;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+            .feature-card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            }
+
+        .icon-circle {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            font-size: 2rem;
+        }
+
+        .puzzle-example {
+            background-color: #5555AA;
+            border-left: 4px solid #007bff;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+
+        .code-line {
+            background-color: #484d96;
+            padding: 0.5rem;
+            margin: 0.2rem 0;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            cursor: move;
+            transition: all 0.2s;
+            border: 2px solid transparent;
+        }
+
+            .code-line:hover {
+                background-color: #282d56;
+                border-color: #007bff;
+                box-shadow: 0 2px 4px rgba(0, 123, 255, 0.2);
+            }
+
+        .sortable-ghost {
+            opacity: 0.7;
+            background-color: #9696ff;
+            border: 2px dashed #007bff;
+        }
+
+        .step-number {
+            background: #007bff;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+    </style>
+}
+<!-- Hero Section -->
+<div class="hero-section">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <h1 class="display-4 fw-bold mb-4">
+                    <i class="fas fa-puzzle-piece me-3"></i>
+                    Програмни пъзели
+                </h1>
+                <p class="lead mb-4">
+                    Интерактивна платформа за учене на програмиране чрез подреждане на готови редове код известни като Пъзели на Парсънс
+                </p>
+                <div class="d-flex gap-3">
+                    <a href="/SelectBundle" class="btn btn-light btn-lg">
+                        <i class="fas fa-play me-2"></i>
+                        Започни сега
+                    </a>
+                    <a href="#how-it-works" class="btn btn-outline-light btn-lg">
+                        <i class="fas fa-info-circle me-2"></i>
+                        Научи повече
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="puzzle-example">
+                    <div class="code-line">&nbsp;&nbsp;&nbsp;&nbsp;factorial = factorial * i</div>
+                    <div class="code-line">for i in range(1, n + 1):</div>
+                    <div class="code-line">print(f"Факториел на {n} е: {factorial}")</div>
+                    <div class="code-line">factorial = 1</div>
+                    <div class="code-line">n = 5</div>
+                </div>
+                <p class="text-white mt-2 text-center">Опитай да подредиш кода!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <!-- What are Parsons Puzzles -->
+    <section class="mb-5">
+        <div class="row">
+            <div class="col-lg-8 mx-auto text-center">
+                <h2 class="mb-4">Какво са Парсънс пъзелите?</h2>
+                <p class="lead text-muted">
+                    Парсънс пъзелите са иновативен метод за учене на програмиране, при който студентите получават готови редове код, които трябва да подредят в правилната последователност за решаване на дадена задача.
+                </p>
+                <div class="row mt-4">
+                    <div class="col-md-4">
+                        <div class="text-center">
+                            <div class="icon-circle bg-primary text-white">
+                                <i class="fas fa-brain"></i>
+                            </div>
+                            <h5>Фокус върху логиката</h5>
+                            <p class="text-muted">Концентрирай се върху алгоритъма без да се притесняваш за синтаксиса</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="text-center">
+                            <div class="icon-circle bg-success text-white">
+                                <i class="fas fa-graduation-cap"></i>
+                            </div>
+                            <h5>По-лесно учене</h5>
+                            <p class="text-muted">Намалява когнитивната натоварка за начинаещи програмисти</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="text-center">
+                            <div class="icon-circle bg-info text-white">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <h5>Бърз прогрес</h5>
+                            <p class="text-muted">Лесен преход от блокови езици към текстови езици за програмирне.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How it works -->
+    <section id="how-it-works" class="mb-5">
+        <div class="row">
+            <div class="col-lg-10 mx-auto">
+                <h2 class="text-center mb-5">Как работи системата?</h2>
+                <div class="row">
+                    <div class="col-lg-6 mb-4">
+                        <div class="card feature-card h-100">
+                            <div class="card-body text-center p-4">
+                                <div class="step-number mx-auto mb-3">1</div>
+                                <h4 class="card-title">
+                                    <i class="fas fa-user-friends text-primary me-2"></i>
+                                    За всички потребители
+                                </h4>
+                                <p class="card-text">
+                                    Всеки може да решава пъзели като избере <strong>"Решаване на пъзели"</strong> от менюто. Не е необходима регистрация за решаване на задачи.
+                                </p>
+                                <a asp-page="/SelectBundle" class="btn btn-primary">
+                                    <i class="fas fa-play me-2"></i>
+                                    Започни решаване
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 mb-4">
+                        <div class="card feature-card h-100">
+                            <div class="card-body text-center p-4">
+                                <div class="step-number mx-auto mb-3">2</div>
+                                <h4 class="card-title">
+                                    <i class="fas fa-user-plus text-success me-2"></i>
+                                    За преподаватели
+                                </h4>
+                                <p class="card-text">
+                                    За създаване на собствени пъзели и пакети се изисква <strong>регистрация</strong>. Регистрираните потребители могат да управляват свои пъзели.
+                                </p>
+                                <a asp-area="Identity" asp-page="/Account/Register" class="btn btn-success">
+                                    <i class="fas fa-user-plus me-2"></i>
+                                    Регистрирай се
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features -->
+    <section class="mb-5">
+        <div class="row">
+            <div class="col-lg-10 mx-auto">
+                <h2 class="text-center mb-5">Ключови характеристики</h2>
+                <div class="row">
+                    <div class="col-md-6 mb-4">
+                        <div class="card feature-card h-100">
+                            <div class="card-body">
+                                <div class="d-flex align-items-start mb-3">
+                                    <div>
+                                        <h5 class="mb-2">Достъп до пакет по код</h5>
+                                        <p class="text-muted mb-0">
+                                            Всеки пакет от пъзели има <strong>уникално име и код</strong>, който позволява лесно споделяне и достъп до конкретни задачи.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-4">
+                        <div class="card feature-card h-100">
+                            <div class="card-body">
+                                <div class="d-flex align-items-start mb-3">
+                                    <div>
+                                        <h5 class="mb-2">Множество езици</h5>
+                                        <p class="text-muted mb-0">
+                                            Поддръжка на различни програмни езици с различен синтаксис включително <strong>Python, SQL, JavaScript</strong> и други.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-4">
+                        <div class="card feature-card h-100">
+                            <div class="card-body">
+                                <div class="d-flex align-items-start mb-3">
+                                    <div>
+                                        <h5 class="mb-2">Управление на вложени конструкции</h5>
+                                        <p class="text-muted mb-0">
+                                            Интуитивен интерфейс за подреждане на редовете код чрез <strong>плъзгане и пускане</strong> и добавяне на отстъпи.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-4">
+                        <div class="card feature-card h-100">
+                            <div class="card-body">
+                                <div class="d-flex align-items-center mb-3">
+                                    <div>
+                                        <h5 class="mb-0">Моментална обратна връзка</h5>
+                                        <p class="text-muted mb-0">
+                                            Получавай <strong>незабавна обратна връзка</strong> за правилността на решението си.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section class="call-to-action">
+        <div class="text-center mb-5">
+            <div class="row">
+                <div class="col-lg-6 mx-auto">
+                    <div class="card border-primary">
+                        <div class="card-body p-4">
+                            <h3 class="card-title text-primary mb-3">
+                                <i class="fas fa-rocket me-2"></i>
+                                Готов ли си да започнеш?
+                            </h3>
+                            <p class="card-text mb-4">
+                                Избери как искаш да използваш платформата:
+                            </p>
+                            <div class="d-flex justify-content-center gap-3 flex-wrap">
+                                <a asp-page="/SelectBundle" class="btn btn-primary btn-lg">
+                                    <i class="fas fa-play me-2"></i>
+                                    Решавай пъзели
+                                </a>
+                                <a asp-area="Identity" asp-page="/Account/Register" class="btn btn-outline-primary btn-lg">
+                                    <i class="fas fa-plus me-2"></i>
+                                    Създавай пъзели
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </section>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+    <script>
+        // Initialize Sortable for puzzle example
+        const puzzleExample = document.querySelector('.puzzle-example');
+        if (puzzleExample) {
+            new Sortable(puzzleExample, {
+                animation: 150,
+                ghostClass: 'sortable-ghost',
+                handle: '.code-line',
+            });
+        }
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Add hover effect to code lines
+        document.querySelectorAll('.code-line').forEach(line => {
+            line.addEventListener('click', function() {
+                this.style.backgroundColor = '#9696ff';
+                this.style.color = 'white';
+                setTimeout(() => {
+                    this.style.backgroundColor = '#484d96';
+                    this.style.color = 'inherit';
+                }, 300);
+            });
+        });
+    </script>
+}
