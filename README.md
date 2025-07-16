@@ -1,5 +1,7 @@
 # Parsons-Puzzles-Toolkit
-A Parsons Puzzles Platform built with ASP.NET Core.
+
+The Parsons Puzzle Toolkit, a recently developed project presented at [FMNS-2025 in Blagoevgrad, Bulgaria](https://fmns2025.swu.bg/), is an advanced educational tool enhancing computational thinking and code comprehension. Originally introduced by Dale Parsons and Patricia Haden in 2006, it builds on traditional Parsons Puzzles with support for multiple programming languages (C, C++, C#, Java, JavaScript, Python, SQL), diverse paradigms, multi-line and nested code blocks, and mini-blocks for focused learning. This customizable, intuitive toolkit bridges block-based and text-based programming and supports SQL-based database tasks. Ongoing development includes new automated evaluation features and feedback mechanisms to further improve the learning experience.
+
 
 ## Technologies Used
 
