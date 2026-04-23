@@ -8,9 +8,11 @@ Parsons Puzzles are structured as code-reordering exercises, where students reco
 
 Key innovations include:
 
-* **Support for multi-line and nested code blocks**, allowing instructors to design more realistic and complex programming exercises that reflect the structure of actual codebases.
-* **Mini-blocks**, which segment tasks into smaller, concept-focused components, making it easier for learners to engage with specific programming constructs or logical subroutines.
-* **Customizable task design**, enabling educators to create puzzles tailored to different skill levels, languages, or conceptual goals.
+* Flexible support for languages with dissimilar syntax, 
+* Multi-line puzzle blocks, 
+* An improved version for handling nested constructions, 
+* Mini-blocks for constructing more complex puzzles in realistic scenarios,
+* Support for “fill-in-the-blank” puzzles.
 
 <img width="925" height="436" alt="image" src="https://github.com/user-attachments/assets/40a200cc-e19a-4d69-a7ee-e96f20b2c12f" />
 
@@ -24,16 +26,18 @@ The toolkit's visual interface and logical segmentation support through structur
 
 This positions the Parsons Puzzle Toolkit not only as an effective classroom tool but also as a foundational component in the broader landscape of computer science education.
 
-Moreover, the toolkit is currently undergoing **active development**, with new features in progress, including **automated evaluation and feedback mechanisms**. These forthcoming additions aim to provide real-time guidance and adaptive learning pathways, thereby enhancing the toolkit’s effectiveness as both a formative and summative assessment tool.
+> [!IMPORTANT] 
+> The Parsons Puzzles Toolkit is currently undergoing active development, led by lead contributors **Miljana Vasilev** and **Asen Plesnev**, with several new features in progress, including **automated evaluation and feedback** mechanisms and **LTI integration** for Learning Management Systems (such as Moodle and Blackboard). These forthcoming additions aim to provide real-time guidance and adaptive learning pathways, enhancing the toolkit’s effectiveness for both formative and summative assessments. 
 
-> [!Note]
-> A full research article detailing the theoretical foundations, technical implementation, and educational applications of the Parsons Puzzle Toolkit is currently under review for publication in a peer-reviewed computer science education journal. 
+> [!NOTE]
+> A full research article detailing the theoretical foundations, technical implementation, and educational applications of the Parsons Puzzle Toolkit is available here  https://azbuki.bg/uncategorized/enhancing-computational-thinking-and-code-comprehension-through-advanced-parson-puzzles/
 
 By expanding the pedagogical reach and technical capacity of traditional Parsons Puzzles, this toolkit offers a future-ready solution for programming education. Whether in introductory computer science courses, specialized programming tracks, or database instruction, it delivers a highly adaptable and impactful learning experience that aligns with modern educational goals.
 
 
 ## Technologies Used
 
+* .NET 8 
 * ASP.NET Core Razor Pages
 * Entity Framework Core
 * SQLite
