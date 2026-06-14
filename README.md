@@ -1,3 +1,22 @@
+# Repository Status
+
+This repository contains the implementation that accompanied the publication:
+
+> Damyanov, I. & Madzhov, M. (2026) Enhancing Computational Thinking and Code Comprehension Through Advanced Parsons Puzzles, Mathematics and Informatics Journal 69(2), pages 190-206, https://doi.org/10.53656/math2026-2-5-ect
+
+It is preserved to ensure reproducibility of the results reported in the paper and to provide a stable reference for readers.
+
+Research and software development have continued after the publication. The actively maintained version of the project, including new functionality, improvements, and ongoing contributions, is available at:
+
+[https://github.com/idamianov/ParsonsPuzzleApp](https://github.com/idamianov/ParsonsPuzzleApp)
+
+This repository remains available as a historical snapshot of the software used during the preparation of the publication.
+
+
+---
+
+
+
 # Parsons-Puzzles-Toolkit
 
 The **Parsons Puzzle Toolkit**, recently presented at [FMNS-2025 in Blagoevgrad, Bulgaria](https://fmns2025.swu.bg/), represents a significant advancement in educational tools aimed at strengthening computational thinking and code comprehension skills. Building upon the original concept introduced by [Dale Parsons and Patricia Haden in 2006](https://dl.acm.org/doi/10.5555/1151869.1151890), this new iteration addresses the limitations of earlier implementations by introducing a comprehensive and highly adaptable framework designed to support a wider range of programming languages, educational contexts, and cognitive learning strategies.
@@ -25,12 +44,6 @@ The toolkit's visual interface and logical segmentation support through structur
 - **algorithmic design**.
 
 This positions the Parsons Puzzle Toolkit not only as an effective classroom tool but also as a foundational component in the broader landscape of computer science education.
-
-> [!IMPORTANT] 
-> The Parsons Puzzles Toolkit is currently undergoing active development, led by lead contributors **Miljana Vasilev** and **Asen Plesnev**, with several new features in progress, including **automated evaluation and feedback** mechanisms and **LTI integration** for Learning Management Systems (such as Moodle and Blackboard). These forthcoming additions aim to provide real-time guidance and adaptive learning pathways, enhancing the toolkit’s effectiveness for both formative and summative assessments. 
-
-> [!NOTE]
-> A full research article detailing the theoretical foundations, technical implementation, and educational applications of the Parsons Puzzle Toolkit is available here  https://azbuki.bg/uncategorized/enhancing-computational-thinking-and-code-comprehension-through-advanced-parson-puzzles/
 
 By expanding the pedagogical reach and technical capacity of traditional Parsons Puzzles, this toolkit offers a future-ready solution for programming education. Whether in introductory computer science courses, specialized programming tracks, or database instruction, it delivers a highly adaptable and impactful learning experience that aligns with modern educational goals.
 
